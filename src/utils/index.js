@@ -11,7 +11,7 @@ const checkValidFields = (schema, doc) => {
   // Invalid Fields Count
   const ifc = invalidFieldsMap.length;
   if (ifc) {
-    throw new Error(`Invalid fields: [${invalidFieldsMap.map((prop, index) => ifc === index ? `${prop.name},` : `${prop.name}`)}]`);
+    throw new Error(`Invalid fields: [${invalidFieldsMap.map(prop => `${prop.name}`).join(', ')}]`);
   }
 };
 
