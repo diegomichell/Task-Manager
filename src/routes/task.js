@@ -1,4 +1,4 @@
-const express = require('express');
+const express = require("express");
 const { Task } = require("../models");
 const { checkValidFields } = require("../utils");
 
@@ -31,10 +31,9 @@ router.get("/tasks/:id", async (req, res) => {
 });
 
 router.post("/tasks", async (req, res) => {
-  checkValidFields(Task.schema, req.body);
-  const task = new Task(req.body);
-
   try {
+    checkValidFields(Task.schema, req.body);
+    const task = new Task(req.body);
     const result = await task.save();
     res.status(201).send(result);
   } catch (error) {
