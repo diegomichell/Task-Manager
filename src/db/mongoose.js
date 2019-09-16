@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const databaseName = "task-manager";
-const connectionURL = `mongodb://127.0.0.1:27017/${databaseName}`;
+const connectionURL = process.env.MONGODB_URI || `mongodb://127.0.0.1:27017/${databaseName}`;
 
 module.exports = {
   start: () => {
