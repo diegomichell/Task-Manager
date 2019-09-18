@@ -54,6 +54,30 @@ router.post("/users/login", async (req, res) => {
   }
 });
 
+router.post("/users/logout", auth, async (req, res) => {
+  try {
+    req.user.tokens = req.user.tokens.filter(token => token.token !== req.token);
+    await req.user.save();
+
+    res.send();
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send();
+  }
+});
+
+router.post("/users/logoutAll", auth, async (req, res) => {
+  try {
+    req.user.tokens = [];
+    await req.user.save();
+
+    res.send();
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send();
+  }
+});
+
 router.patch("/users/:id", auth, async (req, res) => {
   try {
     checkValidFields(User.schema, req.body);
