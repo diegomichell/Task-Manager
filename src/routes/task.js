@@ -1,10 +1,11 @@
 const express = require("express");
 const { Task } = require("../models");
 const { checkValidFields } = require("../utils");
+const { auth } = require("../middlewares");
 
 const router = new express.Router();
 
-router.get("/tasks", async (req, res) => {
+router.get("/tasks", auth, async (req, res) => {
   try {
     const result = await Task.find();
     res.send(result);
@@ -14,7 +15,7 @@ router.get("/tasks", async (req, res) => {
   }
 });
 
-router.get("/tasks/:id", async (req, res) => {
+router.get("/tasks/:id", auth, async (req, res) => {
   try {
     const result = await Task.findById(req.params.id);
 
@@ -30,7 +31,7 @@ router.get("/tasks/:id", async (req, res) => {
   }
 });
 
-router.post("/tasks", async (req, res) => {
+router.post("/tasks", auth, async (req, res) => {
   try {
     checkValidFields(Task.schema, req.body);
     const task = new Task(req.body);
@@ -43,7 +44,7 @@ router.post("/tasks", async (req, res) => {
   }
 });
 
-router.patch("/tasks/:id", async (req, res) => {
+router.patch("/tasks/:id", auth, async (req, res) => {
   try {
     checkValidFields(Task.schema, req.body);
     const result = await Task.findByIdAndUpdate(req.params.id, req.body, {
@@ -64,7 +65,7 @@ router.patch("/tasks/:id", async (req, res) => {
   }
 });
 
-router.delete("/tasks/:id", async (req, res) => {
+router.delete("/tasks/:id", auth, async (req, res) => {
   try {
     const result = await Task.findByIdAndDelete(req.params.id);
 

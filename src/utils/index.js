@@ -1,3 +1,5 @@
+const JWT_SECRET = "myjwtsecret";
+
 const checkValidFields = (schema, doc) => {
   const schemaProps = Object.keys(schema.obj);
   const docProps = Object.keys(doc);
@@ -16,5 +18,6 @@ const checkValidFields = (schema, doc) => {
 };
 
 module.exports = {
-  checkValidFields
+  checkValidFields,
+  JWT_SECRET
 };
