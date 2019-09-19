@@ -9,22 +9,6 @@ router.get("/users/me", auth, async (req, res) => {
   res.send(req.user);
 });
 
-router.get("/users/:id", auth, async (req, res) => {
-  try {
-    const result = await User.findById(req.params.id);
-
-    if (!result) {
-      res.status(404).send();
-      return;
-    }
-
-    res.send(result);
-  } catch (error) {
-    console.log(error.message);
-    res.status(500).send();
-  }
-});
-
 router.post("/users", async (req, res) => {
   try {
     checkValidFields(User.schema, req.body);
@@ -78,16 +62,11 @@ router.post("/users/logoutAll", auth, async (req, res) => {
   }
 });
 
-router.patch("/users/:id", auth, async (req, res) => {
+router.patch("/users/me", auth, async (req, res) => {
   try {
     checkValidFields(User.schema, req.body);
     const updates = Object.keys(req.body);
-    const user = await User.findById(req.params.id);
-
-    if (!user) {
-      res.status(404).send();
-      return;
-    }
+    const user = req.user;
 
     updates.forEach(update => (user[update] = req.body[update]));
     await user.save();
@@ -100,16 +79,10 @@ router.patch("/users/:id", auth, async (req, res) => {
   }
 });
 
-router.delete("/users/:id", auth, async (req, res) => {
+router.delete("/users/me", auth, async (req, res) => {
   try {
-    const result = await User.findByIdAndDelete(req.params.id);
-
-    if (!result) {
-      res.status(404).send();
-      return;
-    }
-
-    res.send(result);
+    await req.user.remove();
+    res.send(req.user);
   } catch (error) {
     res.status(500).send();
   }

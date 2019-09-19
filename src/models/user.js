@@ -70,6 +70,15 @@ userSchema.methods.generateAuthToken = async function() {
   return token;
 };
 
+userSchema.methods.toJSON = function() {
+  const userObject = this.toObject();
+  
+  delete userObject.password;
+  delete userObject.tokens;
+
+  return userObject;
+};
+
 // Hashes the plain text password before saving
 userSchema.pre("validate", async function(next) {
   if (this.isModified("password")) {
