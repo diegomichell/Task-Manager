@@ -3,6 +3,7 @@ const validator = require("validator");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = require("../utils");
+const Task = require("./task");
 
 const userSchema = new Schema({
   name: {
@@ -43,6 +44,12 @@ const userSchema = new Schema({
   ]
 });
 
+userSchema.virtual("tasks", {
+  ref: "Task",
+  localField: "_id",
+  foreignField: "owner"
+});
+
 userSchema.statics.findByCredentials = async (email, password) => {
   const user = await User.findOne({ email });
 
@@ -72,7 +79,7 @@ userSchema.methods.generateAuthToken = async function() {
 
 userSchema.methods.toJSON = function() {
   const userObject = this.toObject();
-  
+
   delete userObject.password;
   delete userObject.tokens;
 
@@ -80,10 +87,15 @@ userSchema.methods.toJSON = function() {
 };
 
 // Hashes the plain text password before saving
-userSchema.pre("validate", async function(next) {
+userSchema.pre("save", async function(next) {
   if (this.isModified("password")) {
     this.password = await bcrypt.hash(this.password, 8);
   }
+  next();
+});
+
+userSchema.pre("remove", async function(next) {
+  await Task.deleteMany({ owner: this._id });
   next();
 });
 
