@@ -5,44 +5,49 @@ const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = require("../utils");
 const Task = require("./task");
 
-const userSchema = new Schema({
-  name: {
-    type: String,
-    required: true,
-    trim: true
-  },
-  password: {
-    type: String,
-    required: true,
-    minlength: 6,
-    trim: true,
-    validate(value) {
-      if (value.includes("password")) {
-        throw new Error("The password can't contain the word 'password'");
+const userSchema = new Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+      trim: true
+    },
+    password: {
+      type: String,
+      required: true,
+      minlength: 6,
+      trim: true,
+      validate(value) {
+        if (value.includes("password")) {
+          throw new Error("The password can't contain the word 'password'");
+        }
       }
-    }
-  },
-  age: Number,
-  email: {
-    type: String,
-    trim: true,
-    lowercase: true,
-    unique: true,
-    validate(value) {
-      if (!validator.isEmail(value)) {
-        throw new Error("Invalid email address");
+    },
+    age: Number,
+    email: {
+      type: String,
+      trim: true,
+      lowercase: true,
+      unique: true,
+      validate(value) {
+        if (!validator.isEmail(value)) {
+          throw new Error("Invalid email address");
+        }
       }
-    }
-  },
-  tokens: [
-    {
-      token: {
-        type: "string",
-        required: true
+    },
+    tokens: [
+      {
+        token: {
+          type: "string",
+          required: true
+        }
       }
-    }
-  ]
-});
+    ]
+  },
+  {
+    timestamps: true
+  }
+);
 
 userSchema.virtual("tasks", {
   ref: "Task",
