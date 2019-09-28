@@ -6,11 +6,21 @@ const { auth } = require("../middlewares");
 const router = new express.Router();
 
 router.get("/tasks", auth, async (req, res) => {
+  const {sortBy} = req.query;
+  const sortParts = sortBy ? sortBy.split('_') : null;
+
   try {
     await req.user.populate({
       path: "tasks",
       match: {
         completed: req.query.completed || false
+      },
+      options: {
+        limit: parseInt(req.query.limit),
+        skip: parseInt(req.query.skip),
+        sort: sortParts ? {
+          [sortParts[0]]: sortParts[1]
+        } : null
       }
     }).execPopulate();
     res.send(req.user.tasks);
