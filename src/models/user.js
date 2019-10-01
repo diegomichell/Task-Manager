@@ -42,7 +42,10 @@ const userSchema = new Schema(
           required: true
         }
       }
-    ]
+    ],
+    avatar: {
+      type: Buffer
+    }
   },
   {
     timestamps: true

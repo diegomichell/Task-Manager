@@ -92,3 +92,5 @@ typings/
 .idea/
 
 avatar/
+
+.DS_Store
