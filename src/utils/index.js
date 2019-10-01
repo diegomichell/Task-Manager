@@ -1,5 +1,7 @@
 const JWT_SECRET = "myjwtsecret";
 
+const MAX_AVATAR_FILE_SIZE = 1000000;
+
 const checkValidFields = (schema, doc) => {
   const schemaProps = Object.keys(schema.obj);
   const docProps = Object.keys(doc);
