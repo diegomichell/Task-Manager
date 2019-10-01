@@ -94,3 +94,5 @@ typings/
 avatar/
 
 .DS_Store
+
+lib/
