@@ -1,7 +1,7 @@
-const UserRouter = require('./user');
-const TaskRouter = require('./task');
+import UserRouter from './user';
+import TaskRouter from './task';
 
-module.exports = {
+export default {
   UserRouter,
   TaskRouter
 };

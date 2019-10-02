@@ -1,7 +1,7 @@
-const User = require("./user");
-const Task = require("./task");
+import User from "./user";
+import Task from "./task";
 
-module.exports = {
+export default {
   User,
   Task
 };

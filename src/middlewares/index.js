@@ -1,5 +1,5 @@
-const auth = require('./auth');
+import auth from './auth';
 
-module.exports = {
+export default {
   auth
 };

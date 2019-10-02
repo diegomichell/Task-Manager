@@ -1,9 +1,9 @@
-const express = require("express");
-const { Task } = require("../models");
-const { checkValidFields } = require("../utils");
-const { auth } = require("../middlewares");
+import { Router } from "express";
+import { Task } from "../models";
+import { checkValidFields } from "../utils";
+import { auth } from "../middlewares";
 
-const router = new express.Router();
+const router = new Router();
 
 router.get("/tasks", auth, async (req, res) => {
   const {sortBy} = req.query;
@@ -107,4 +107,4 @@ router.delete("/tasks/:id", auth, async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

@@ -1,11 +1,10 @@
-const express = require("express");
-const path = require("path");
-const multer = require("multer");
-const { User } = require("../models");
-const { checkValidFields, MAX_AVATAR_FILE_SIZE } = require("../utils");
-const { auth } = require("../middlewares");
+import { Router } from "express";
+import multer from "multer";
+import { User } from "../models";
+import { checkValidFields, MAX_AVATAR_FILE_SIZE } from "../utils";
+import { auth } from "../middlewares";
 
-const router = new express.Router();
+const router = new Router();
 const upload = multer({
   limits: {
     fileSize: MAX_AVATAR_FILE_SIZE
@@ -126,4 +125,4 @@ router.delete("/users/me/avatar", auth, async (req, res) => {
   res.send();
 });
 
-module.exports = router;
+export default router;

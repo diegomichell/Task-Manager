@@ -19,7 +19,8 @@ const checkValidFields = (schema, doc) => {
   }
 };
 
-module.exports = {
+export default {
   checkValidFields,
-  JWT_SECRET
+  JWT_SECRET,
+  MAX_AVATAR_FILE_SIZE
 };

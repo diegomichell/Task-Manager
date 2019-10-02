@@ -1,4 +1,4 @@
-const { model, Schema, Types } = require("mongoose");
+import { model, Schema, Types } from "mongoose";
 
 const taskSchema = new Schema(
   {
@@ -24,4 +24,4 @@ const taskSchema = new Schema(
 
 const Task = model("Task", taskSchema);
 
-module.exports = Task;
+export default Task;

@@ -1,11 +1,11 @@
-const jwt = require("jsonwebtoken");
-const { JWT_SECRET } = require("../utils");
-const { User } = require("../models");
+import { verify } from "jsonwebtoken";
+import { JWT_SECRET } from "../utils";
+import { User } from "../models";
 
 const auth = async (req, res, next) => {
   try {
     const token = (req.header('authorization') || "").replace("Bearer ", "");
-    const decoded = jwt.verify(token, JWT_SECRET);
+    const decoded = verify(token, JWT_SECRET);
     
     if (!token) {
       throw new Error("Token not provided.");
@@ -28,4 +28,4 @@ const auth = async (req, res, next) => {
   }
 };
 
-module.exports = auth;
+export default auth;
