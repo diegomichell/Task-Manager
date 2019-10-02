@@ -1,5 +1,5 @@
 import auth from './auth';
 
-export default {
+export {
   auth
 };

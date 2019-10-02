@@ -1,7 +1,7 @@
 import UserRouter from './user';
 import TaskRouter from './task';
 
-export default {
+export {
   UserRouter,
   TaskRouter
 };
