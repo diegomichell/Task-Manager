@@ -4,6 +4,7 @@ import sharp from "sharp";
 import { User } from "../models";
 import { checkValidFields, MAX_AVATAR_FILE_SIZE } from "../utils";
 import { auth } from "../middlewares";
+import { account } from "../email";
 
 const router = new Router();
 const upload = multer({
@@ -29,6 +30,7 @@ router.post("/users", async (req, res) => {
     const user = new User(req.body);
     await user.save();
     const token = await user.generateAuthToken();
+    await account.sendWelcomeEmail(user.email, user.name);
 
     res.status(201).send({ user, token });
   } catch (error) {
@@ -98,6 +100,7 @@ router.patch("/users/me", auth, async (req, res) => {
 router.delete("/users/me", auth, async (req, res) => {
   try {
     await req.user.remove();
+    await account.sendCancelEmail(req.user.email, req.user.name);
     res.send(req.user);
   } catch (error) {
     res.status(500).send();
