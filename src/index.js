@@ -1,14 +1,7 @@
-import express from "express";
 import db from "./db/mongoose";
-import { UserRouter, TaskRouter } from "./routes";
+import app from './app';
 
-const app = express();
-const port = process.env.PORT || 3000;
-
-app.use(express.json());
-
-app.use(UserRouter);
-app.use(TaskRouter);
+const port = process.env.PORT;
 
 db.start().then(() => {
   app.listen(port, () => {

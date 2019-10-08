@@ -1,4 +1,4 @@
-const JWT_SECRET = "myjwtsecret";
+const JWT_SECRET = process.env.JWT_SECRET;
 
 const MAX_AVATAR_FILE_SIZE = 1000000;
 
