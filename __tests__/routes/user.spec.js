@@ -11,7 +11,8 @@ const defaultUser = {
   name: "Mikaila",
   password: "123456",
   email: "mika@gmail.com",
-  tokens: [{ token: jwt.sign({ _id: defaultUserId }, process.env.JWT_SECRET) }]
+  tokens: [{ token: jwt.sign({ _id: defaultUserId }, process.env.JWT_SECRET) }],
+  avatar: Buffer.from("__tests__/fixtures/sa.jpeg")
 };
 
 describe("Test User routes", () => {
@@ -34,12 +35,12 @@ describe("Test User routes", () => {
       })
       .expect(201);
 
-      const savedUser = await User.findById(response.body.user._id);
+    const savedUser = await User.findById(response.body.user._id);
 
-      expect(savedUser).toMatchObject({
-        name: "Diego",
-        email: "diego@mail.com"
-      });
+    expect(savedUser).toMatchObject({
+      name: "Diego",
+      email: "diego@mail.com"
+    });
   });
 
   it("Should hash user password", async () => {
@@ -52,7 +53,33 @@ describe("Test User routes", () => {
       })
       .expect(201);
 
-      expect(response.body.user.password).not.toBe('123456');
+    expect(response.body.user.password).not.toBe("123456");
+  });
+
+  it("Should update user", async () => {
+    const response = await request(app)
+      .patch("/users/me")
+      .set("Authorization", `Bearer ${defaultUser.tokens[0].token}`)
+      .send({
+        name: "Diego"
+      })
+      .expect(200);
+
+    expect(response.body).toMatchObject({
+      _id: defaultUserId.toHexString(),
+      name: "Diego",
+      email: defaultUser.email
+    });
+  });
+
+  it("Should not update invalid user fields", async () => {
+    await request(app)
+      .patch("/users/me")
+      .set("Authorization", `Bearer ${defaultUser.tokens[0].token}`)
+      .send({
+        homeAddress: "Vancouver, BC"
+      })
+      .expect(400);
   });
 
   it("Should login user", async () => {
@@ -94,6 +121,37 @@ describe("Test User routes", () => {
     await request(app)
       .post("/users/logout")
       .set("Authorization", `Bearer ${defaultUser.tokens[0].token}`)
+      .send()
+      .expect(200);
+  });
+
+  it("Should logout user from all", async () => {
+    await request(app)
+      .post("/users/logoutAll")
+      .set("Authorization", `Bearer ${defaultUser.tokens[0].token}`)
+      .send()
+      .expect(200);
+  });
+
+  it("Should get my user", async () => {
+    await request(app)
+      .get("/users/me")
+      .set("Authorization", `Bearer ${defaultUser.tokens[0].token}`)
+      .send()
+      .expect(200);
+  });
+
+  it("Should upload avatar", async () => {
+    await request(app)
+      .post("/users/me/avatar")
+      .set("Authorization", `Bearer ${defaultUser.tokens[0].token}`)
+      .attach("avatar", "__tests__/fixtures/sa.jpeg")
+      .expect(200);
+  });
+
+  it("Should get avatar", async () => {
+    await request(app)
+      .get(`/users/${defaultUserId}/avatar`)
       .send()
       .expect(200);
   });

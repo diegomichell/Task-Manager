@@ -7,7 +7,8 @@ export default {
     return mongoose.connect(connectionURL, {
       useNewUrlParser: true,
       useCreateIndex: true,
-      useFindAndModify: false
+      useFindAndModify: false,
+      useUnifiedTopology: true
     });
   },
   disconnect: () => mongoose.disconnect()
