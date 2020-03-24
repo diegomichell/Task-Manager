@@ -1,5 +1,5 @@
 import express from 'express';
-import * as cors from 'cors';
+import cors from 'cors';
 import { TaskRouter, UserRouter } from './routes';
 
 const app = express();
