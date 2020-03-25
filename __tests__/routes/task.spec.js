@@ -61,7 +61,7 @@ describe("Test Task routes", () => {
       .expect(200);
   });
 
-  it("Should no get inexistent task", async () => {
+  it("Should no get non existing task", async () => {
     await request(app)
       .get(`/tasks/5d8373ac3aae452d152ac212}`)
       .set("Authorization", `Bearer ${defaultUser.tokens[0].token}`)
@@ -93,7 +93,7 @@ describe("Test Task routes", () => {
       .expect(200);
   });
 
-  it("Should not delete inexistent task", async () => {
+  it("Should not delete non existing task", async () => {
     await request(app)
       .delete(`/tasks/5d8373ac3aae452d152ac212}`)
       .set("Authorization", `Bearer ${defaultUser.tokens[0].token}`)

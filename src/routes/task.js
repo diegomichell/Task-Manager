@@ -37,15 +37,9 @@ router.get("/tasks/:id", auth, async (req, res) => {
       owner: req.user._id
     });
 
-    if (!result) {
-      res.status(404).send();
-      return;
-    }
-
     res.send(result);
   } catch (error) {
-    console.log(error.message);
-    res.status(500).send();
+    res.status(404).send();
   }
 });
 
@@ -94,16 +88,11 @@ router.delete("/tasks/:id", auth, async (req, res) => {
       owner: req.user._id
     });
 
-    if (!task) {
-      res.status(404).send();
-      return;
-    }
-
     await task.remove();
 
     res.send(task);
   } catch (error) {
-    res.status(500).send();
+    res.status(404).send();
   }
 });
 
